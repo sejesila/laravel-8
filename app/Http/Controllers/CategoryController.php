@@ -11,13 +11,26 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    public function AllCat()
+    public function allCat()
 
     {
-        $categories = Category::all();
+        /* using Eloquent ORM
+        $categories = Category::all(); or
+        $categories = Category::latest()->get();
+        */
+         $categories = Category::latest()->paginate(8);
+
+        //using query builder
+        //$categories = DB::table('categories')->latest()->get(); //without pagination
+        //$categories = DB::table('categories')->latest()->paginate(4);
+       /*  $categories = DB::table('categories')
+        ->join('users','categories.user_id','users.id')
+        ->select('categories.*','users.name')
+        ->latest()->paginate(4); */
+
         return view('admin.category.index',compact('categories'));
     }
-    public function AddCat(Request $request)
+    public function addCat(Request $request)
     {
         $validated = $request->validate(
             [
@@ -58,4 +71,28 @@ class CategoryController extends Controller
         DB::table('categories')->insert($data);
         return Redirect()->back()->with('success', 'Category inserted successfully'); */
     }
+    public function editCat($id){
+
+        //$categories = Category::findOrFail($id); //eloquent method
+
+        $categories = DB::table('categories')->where('id',$id)->first(); //using query builder
+        return view('admin.category.edit',compact('categories'));
+    }
+    public function updateCat(Request $request,$id)
+    {
+        //uses eloquent
+        /* $update = Category::findOrFail($id)->update(
+            [
+            'category_name'=>$request->category_name,
+            'user_id' => Auth::user()->id
+         ] ); */
+
+         //using query builder
+         $data = array();
+         $data['category_name'] = $request->category_name;
+         $data['user_id']=Auth::user()->id;
+         DB::table('categories')->where('id',$id)->update($data);
+         return Redirect::route('all.category')->with('success','Category updated successfully');
+    }
+
 }
