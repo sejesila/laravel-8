@@ -18,17 +18,18 @@ class CategoryController extends Controller
         $categories = Category::all(); or
         $categories = Category::latest()->get();
         */
-         $categories = Category::latest()->paginate(8);
+        $categories = Category::latest()->paginate(8);
+        $trashCat = Category::onlyTrashed()->latest()->paginate(3);
 
         //using query builder
         //$categories = DB::table('categories')->latest()->get(); //without pagination
         //$categories = DB::table('categories')->latest()->paginate(4);
-       /*  $categories = DB::table('categories')
+        /*  $categories = DB::table('categories')
         ->join('users','categories.user_id','users.id')
         ->select('categories.*','users.name')
         ->latest()->paginate(4); */
 
-        return view('admin.category.index',compact('categories'));
+        return view('admin.category.index', compact('categories', 'trashCat'));
     }
     public function addCat(Request $request)
     {
@@ -39,25 +40,26 @@ class CategoryController extends Controller
             ],
             [
                 'category_name.required' => 'This field cannot be empty',
-            ]);
+            ]
+        );
 
         /* The first two methods implements Eloquent ORM
 
 
           ORM method 1 */
 
-          Category::insert([
-       'category_name'=>$request->category_name,
-       'user_id'=>Auth::user()->id,
-       'created_at'=>Carbon::now()
+        Category::insert([
+            'category_name' => $request->category_name,
+            'user_id' => Auth::user()->id,
+            'created_at' => Carbon::now()
 
-    ]);
-     return redirect()->back()->with('success','Category inserted successfully');
+        ]);
+        return redirect()->back()->with('success', 'Category inserted successfully');
 
 
 
         // ORM method 2
-       /*  $category = new Category();
+        /*  $category = new Category();
         $category->category_name= $request->category_name;
         $category->user_id = Auth::user()->id;
         $category->save();
@@ -71,28 +73,44 @@ class CategoryController extends Controller
         DB::table('categories')->insert($data);
         return Redirect()->back()->with('success', 'Category inserted successfully'); */
     }
-    public function editCat($id){
+    public function editCat($id)
+    {
 
         //$categories = Category::findOrFail($id); //eloquent method
 
-        $categories = DB::table('categories')->where('id',$id)->first(); //using query builder
-        return view('admin.category.edit',compact('categories'));
+        $categories = DB::table('categories')->where('id', $id)->first(); //using query builder
+        return view('admin.category.edit', compact('categories'));
     }
-    public function updateCat(Request $request,$id)
+    public function updateCat(Request $request, $id)
     {
-        //uses eloquent
+        //using eloquent
         /* $update = Category::findOrFail($id)->update(
             [
             'category_name'=>$request->category_name,
             'user_id' => Auth::user()->id
          ] ); */
 
-         //using query builder
-         $data = array();
-         $data['category_name'] = $request->category_name;
-         $data['user_id']=Auth::user()->id;
-         DB::table('categories')->where('id',$id)->update($data);
-         return Redirect::route('all.category')->with('success','Category updated successfully');
+        //using query builder
+        $data = array();
+        $data['category_name'] = $request->category_name;
+        $data['user_id'] = Auth::user()->id;
+        DB::table('categories')->where('id', $id)->update($data);
+        return Redirect::route('all.category')->with('success', 'Category updated successfully');
     }
+    public function softDelete($id)
+    {
 
+        $delete = Category::findOrFail($id)->delete();
+        return Redirect()->back()->with('success', 'Soft deletion succesful');
+    }
+    public function restoreDeleted($id)
+    {
+        $delete = Category::withTrashed()->findOrFail($id)->restore();
+        return Redirect::back()->with('success','Restored Successfully');
+
+    }
+    public function hardDelete($id){
+        $p_delete = Category::onlyTrashed()->findOrFail($id)->forceDelete();
+        return Redirect::back()->with('success','Category Permanently deleted');
+    }
 }

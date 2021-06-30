@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Models\User;
@@ -24,6 +25,17 @@ Route::post('/category/add',[CategoryController::class,'addCat'])->name('store.c
 Route::get('/category/edit/{id}',[CategoryController::class,'editCat']);
 
 Route::post('/category/update/{id}',[CategoryController::class,'updateCat']);
+
+Route::get('/softdelete/category/{id}',[CategoryController::class,'softDelete']);
+
+Route::get('/category/restore/{id}',[CategoryController::class,'restoreDeleted']);
+
+Route::get('/pdelete/category/{id}',[CategoryController::class,'hardDelete']);
+
+
+//Brand Controller
+Route::get('/brand/all',[BrandController::class,'index'])->name('all.brands');
+Route::post('/brand/add',[BrandController::class,'addBrand'])->name('store.brand');
 
 
 
