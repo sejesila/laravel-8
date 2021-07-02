@@ -43,15 +43,23 @@
                                         <th scope="row">{{ $brands->firstItem() + $loop->index }}</th>
                                         <td>{{ $brand->brand_name }}</td>
                                         <td><img src="{{ asset($brand->brand_image) }}" alt="{{ $brand->brand_name }}" style="height: 40px; width:70px;"></td>
-                                        <td>{{ Carbon\Carbon::parse($brand->created_at)->diffForHumans() }}</td>
+                                        <td>
+                                            @if ($brand->created_at==NULL)
+
+                                            <span class="text-danger">No Date Set</span>
+
+                                           @else
+
+                                            {{ Carbon\Carbon::parse($brand->created_at)->diffForHumans() }}
+                                            @endif</td>
                                         <td>
 
-                                            <a href="{{ url('category/edit/' . $brand->id) }}"
+                                            <a href="{{ url('brand/edit/' . $brand->id) }}"
                                                 class="btn btn-info">Edit
                                             </a>
 
 
-                                                <a href="{{ url('softdelete/category/'.$brand->id) }}" class="btn btn-danger">Delete
+                                                <a href="{{ url('delete/brand/'.$brand->id) }}" class="btn btn-danger" onclick="return confirm('Are you sure yo want to delete this brand?')">Delete
                                                 </a>
 
                                         </td>
@@ -64,9 +72,6 @@
                             </tbody>
 
                         </table>
-
-
-
                     </div>
 
                 </div>
@@ -79,14 +84,14 @@
                                 <div class="form-group m-2">
                                     <label class="m-2" for="brand_name">Brand Name</label>
 
-                                    <input type="text" class="form-control m-2" name="brand_name" value="{{ old('brand_name') }}">
+                                    <input type="text" class="form-control m-2" name="brand_name" >
                                     @error('brand_name')
 
                                         <span class="text-danger m-2">{{ $message }}</span>
 
                                     @enderror
                                     <label class="m-2" for="brand_name">Brand Image</label>
-                                    <input class="form-control m-2" type="file" name="brand_image" value="{{ old('brand_image') }}">
+                                    <input class="form-control m-2" type="file" name="brand_image">
                                     @error('brand_image')
 
                                         <span class="text-danger m-2">{{ $message }}</span>
