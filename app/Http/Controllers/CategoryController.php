@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    public function allCat()
+    public function index()
 
     {
         /* using Eloquent ORM
@@ -31,7 +31,7 @@ class CategoryController extends Controller
 
         return view('admin.category.index', compact('categories', 'trashCat'));
     }
-    public function addCat(Request $request)
+    public function store(Request $request)
     {
         $validated = $request->validate(
             [
@@ -78,8 +78,9 @@ class CategoryController extends Controller
 
         //$categories = Category::findOrFail($id); //eloquent method
 
+
         $categories = DB::table('categories')->where('id', $id)->first(); //using query builder
-        return view('admin.category.edit', compact('categories'));
+       return view('admin.category.edit', compact('categories'));
     }
     public function updateCat(Request $request, $id)
     {
@@ -95,7 +96,7 @@ class CategoryController extends Controller
         $data['category_name'] = $request->category_name;
         $data['user_id'] = Auth::user()->id;
         DB::table('categories')->where('id', $id)->update($data);
-        return Redirect::route('all.category')->with('success', 'Category updated successfully');
+        return Redirect::route('categories.index')->with('success', 'Category updated successfully');
     }
     public function softDelete($id)
     {
@@ -109,7 +110,7 @@ class CategoryController extends Controller
         return Redirect::back()->with('success','Restored Successfully');
 
     }
-    public function hardDelete($id){
+    public function destroy($id){
         $p_delete = Category::onlyTrashed()->findOrFail($id)->forceDelete();
         return Redirect::back()->with('success','Category Permanently deleted');
     }

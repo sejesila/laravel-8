@@ -18,9 +18,9 @@ Route::get('/about-us', function () {
 })->name('abc');
 
 //Category Controller
-Route::get('/category/all',[CategoryController::class,'allCat'])->name('all.category');
+Route::get('/category',[CategoryController::class,'index'])->name('categories.index');
 
-Route::post('/category/add',[CategoryController::class,'addCat'])->name('store.category');
+Route::post('/category',[CategoryController::class,'store'])->name('categories.store');
 
 Route::get('/category/edit/{id}',[CategoryController::class,'editCat']);
 
@@ -30,7 +30,7 @@ Route::get('/softdelete/category/{id}',[CategoryController::class,'softDelete'])
 
 Route::get('/category/restore/{id}',[CategoryController::class,'restoreDeleted']);
 
-Route::get('/pdelete/category/{id}',[CategoryController::class,'hardDelete']);
+Route::get('/category/{id}',[CategoryController::class,'destroy'])->name('categories.destroy');
 
 
 //Brand Controller

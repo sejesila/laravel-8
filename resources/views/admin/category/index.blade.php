@@ -64,8 +64,6 @@
                         </table>
                         {{ $categories->links() }} {{-- pagination --}}
 
-
-
                     </div>
 
                 </div>
@@ -73,7 +71,7 @@
                     <div class="card">
                         <div class="card-header"> Add Category</div>
                         <div class="card-body">
-                            <form action="{{ route('store.category') }}" method="POST">
+                            <form action="{{ route('categories.store') }}" method="POST">
                                 @csrf
                                 <div class="form-group m-2">
                                     <label class="m-2" for="cat_name">Category Name</label>
@@ -136,7 +134,7 @@
                                                 class="btn btn-info">Restore</a>
 
 
-                                            <a href="{{ url('pdelete/category/'.$category->id) }}" class="btn btn-danger">Hard Delete</a>
+                                            <a href="{{ url('/category/'.$category->id) }}" class="btn btn-danger">Hard Delete</a>
 
                                         </td>
 
