@@ -18,9 +18,12 @@
                     <x-jet-nav-link href="{{ route('categories.index') }}">
                       All Category
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('all.brands') }}">
+                    <x-jet-nav-link href="{{ route('brands.index') }}">
                        Brand
                       </x-jet-nav-link>
+                      <x-jet-nav-link href="{{ route('images.index') }}">
+                        Multi Image
+                       </x-jet-nav-link>
                 </div>
             </div>
 

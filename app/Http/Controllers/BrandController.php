@@ -3,14 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+use App\Models\Multipic;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class BrandController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $brands = Brand::latest()->paginate(5);
@@ -34,7 +40,7 @@ class BrandController extends Controller
         if ($validate->fails()) {
             return Redirect::back()->withErrors($validate)->withInput();
         } else {
-            /*   generate random image name and upload */
+            /*  /*   generate random image name and upload
             $image = $request->file('brand_image');
             $random_name = hexdec(uniqid());
             $image_extension = strtolower($image->getClientOriginalExtension());
@@ -43,7 +49,14 @@ class BrandController extends Controller
             $last_uploaded = $upload_location . $image_name;
             $image->move($upload_location, $image_name);
 
-            // dd(storage_path());
+         */
+            // Use image intervention package to resize the images
+            $image = $request->file('brand_image');
+            $random_name = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+            Image::make($image)->resize(300, 200)->save('images/brand/' . $random_name);
+            $last_uploaded = 'images/brand/' . $random_name;
+
+
 
             Brand::insert([
                 'brand_name' => $request->brand_name,
@@ -79,7 +92,7 @@ class BrandController extends Controller
 
             if ($image) {
 
-             /*    Execute this if image field is edited */
+                /*    Execute this if image field is edited */
 
                 $random_name = hexdec(uniqid());
                 $image_extension = strtolower($image->getClientOriginalExtension());
@@ -103,7 +116,7 @@ class BrandController extends Controller
 
                 return Redirect::back()->with('success', 'Brand Updated successfully');
             } else {
-               /*  executes if only brand name is edited */
+                /*  executes if only brand name is edited */
                 Brand::find($id)->update([
                     'brand_name' => $request->brand_name,
                     'updated_at' => Carbon::now()
@@ -115,8 +128,41 @@ class BrandController extends Controller
         }
     }
 
-    public function hardDelete($id){
-        
+    public function destroy($id)
+    {
+        $image = Brand::findOrFail($id);
+        $old_image = $image->brand_image;
+        unlink($old_image);
 
+
+        Brand::findOrFail($id)->delete();
+        return Redirect::back()->with('success', 'Brand Deleted successfully');
+    }
+    public function multImage()
+    {
+        $images = Multipic::all();
+        return view('admin.multipic.index', compact('images'));
+    }
+    public function storeImages(Request $request)
+    {
+
+        $image = $request->file('image');
+
+        foreach ($image as $multi_img) {
+
+
+            $random_name = hexdec(uniqid()) . '.' . $multi_img->getClientOriginalExtension();
+            Image::make($multi_img)->resize(300, 300)->save('images/multi/' . $random_name);
+            $last_uploaded = 'images/multi/' . $random_name;
+
+            Multipic::insert([
+
+                'image' => $last_uploaded,
+                'created_at' => Carbon::now()
+            ]);
+        }
+
+
+        return Redirect::back()->with('success', 'Images added successfully');
     }
 }

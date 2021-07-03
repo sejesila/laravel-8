@@ -59,7 +59,7 @@
                                             </a>
 
 
-                                                <a href="{{ url('delete/brand/'.$brand->id) }}" class="btn btn-danger" onclick="return confirm('Are you sure yo want to delete this brand?')">Delete
+                                                <a href="{{ url('brand/'.$brand->id) }}" class="btn btn-danger" onclick="return confirm('Are you sure yo want to delete this brand?')">Delete
                                                 </a>
 
                                         </td>

@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
 
     {
@@ -80,7 +84,7 @@ class CategoryController extends Controller
 
 
         $categories = DB::table('categories')->where('id', $id)->first(); //using query builder
-       return view('admin.category.edit', compact('categories'));
+        return view('admin.category.edit', compact('categories'));
     }
     public function updateCat(Request $request, $id)
     {
@@ -107,11 +111,11 @@ class CategoryController extends Controller
     public function restoreDeleted($id)
     {
         $delete = Category::withTrashed()->findOrFail($id)->restore();
-        return Redirect::back()->with('success','Restored Successfully');
-
+        return Redirect::back()->with('success', 'Restored Successfully');
     }
-    public function destroy($id){
+    public function destroy($id)
+    {
         $p_delete = Category::onlyTrashed()->findOrFail($id)->forceDelete();
-        return Redirect::back()->with('success','Category Permanently deleted');
+        return Redirect::back()->with('success', 'Category Permanently deleted');
     }
 }
