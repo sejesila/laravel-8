@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Multipic;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -164,5 +165,9 @@ class BrandController extends Controller
 
 
         return Redirect::back()->with('success', 'Images added successfully');
+    }
+    public function logout(){
+        Auth::logout();
+        return Redirect()->route('login')->with('success','User Logout');
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 Route::get('/home', function () {
     echo "this is home page";
@@ -43,10 +43,10 @@ Route::post('/multimage',[BrandController::class,'storeImages'])->name('image.st
 
 
 
-
-
-
 Route::get('/contact', [ContactController::class,'index'])->middleware('checkage');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {    
     return view('admin.index');})->name('dashboard');
+
+/* Logout route */
+Route::get('/user/logout',[BrandController::class,'logout'])->name('user.logout');
