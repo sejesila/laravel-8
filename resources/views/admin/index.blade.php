@@ -846,7 +846,8 @@
                     </div>
                     <div class="media-body align-self-center">
                         <a href="#">
-                            <h6 class="mb-3 text-dark font-weight-medium"> Gucci Watch</h6>
+                          
+                          <h6 class="mb-3 text-dark font-weight-medium"> Gucci Watch</h6>
                         </a>
                         <p class="float-md-right"><span class="text-dark mr-2">10</span>Sales</p>
                         <p class="d-none d-md-block">Statement belting with double-turnlock hardware

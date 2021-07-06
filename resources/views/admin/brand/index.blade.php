@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('admin.admin_master')
+
+@section('admin')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             All Brands
@@ -13,12 +15,12 @@
                     <div class="card">
                         @if (session('success'))
 
-                        <div class="alert alert-success" role="alert">
-                           <strong>{{ session('success') }}</strong>
+                            <div class="alert alert-success" role="alert">
+                                <strong>{{ session('success') }}</strong>
 
-                            <hr>
+                                <hr>
 
-                          </div>
+                            </div>
 
                         @endif
 
@@ -42,25 +44,27 @@
                                     <tr>
                                         <th scope="row">{{ $brands->firstItem() + $loop->index }}</th>
                                         <td>{{ $brand->brand_name }}</td>
-                                        <td><img src="{{ asset($brand->brand_image) }}" alt="{{ $brand->brand_name }}" style="height: 40px; width:70px;"></td>
+                                        <td><img src="{{ asset($brand->brand_image) }}" alt="{{ $brand->brand_name }}"
+                                                style="height: 40px; width:70px;"></td>
                                         <td>
-                                            @if ($brand->created_at==NULL)
+                                            @if ($brand->created_at == null)
 
-                                            <span class="text-danger">No Date Set</span>
+                                                <span class="text-danger">No Date Set</span>
 
-                                           @else
+                                            @else
 
-                                            {{ Carbon\Carbon::parse($brand->created_at)->diffForHumans() }}
-                                            @endif</td>
+                                                {{ Carbon\Carbon::parse($brand->created_at)->diffForHumans() }}
+                                            @endif
+                                        </td>
                                         <td>
 
-                                            <a href="{{ url('brand/edit/' . $brand->id) }}"
-                                                class="btn btn-info">Edit
+                                            <a href="{{ url('brand/edit/' . $brand->id) }}" class="btn btn-info">Edit
                                             </a>
 
 
-                                                <a href="{{ url('brand/'.$brand->id) }}" class="btn btn-danger" onclick="return confirm('Are you sure yo want to delete this brand?')">Delete
-                                                </a>
+                                            <a href="{{ url('brand/' . $brand->id) }}" class="btn btn-danger"
+                                                onclick="return confirm('Are you sure yo want to delete this brand?')">Delete
+                                            </a>
 
                                         </td>
                                     </tr>
@@ -84,7 +88,7 @@
                                 <div class="form-group m-2">
                                     <label class="m-2" for="brand_name">Brand Name</label>
 
-                                    <input type="text" class="form-control m-2" name="brand_name" >
+                                    <input type="text" class="form-control m-2" name="brand_name">
                                     @error('brand_name')
 
                                         <span class="text-danger m-2">{{ $message }}</span>
@@ -118,4 +122,4 @@
 
 
     </div>
-</x-app-layout>
+@endsection

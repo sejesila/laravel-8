@@ -3,12 +3,14 @@
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
-    return view('home');
+    $brands = DB::table('brands')->get();
+    return view('home',compact('brands'));
 });
 Route::get('/home', function () {
     echo "this is home page";
@@ -50,3 +52,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 /* Logout route */
 Route::get('/user/logout',[BrandController::class,'logout'])->name('user.logout');
+
+Route::get('/home/slider',[HomeController::class,'slider'])->name('home.slider');
+
+Route::get('/slider/add',[HomeController::class,'addSlider'])->name('slider.add');
+Route::post('/slider',[HomeController::class,'store'])->name('sliders.store');
