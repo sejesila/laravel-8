@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -42,8 +43,8 @@ class HomeController extends Controller
             // Use image intervention package to resize the images
             $image = $request->file('image');
             $random_name = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-            Image::make($image)->resize(300, 200)->save('images/home/' . $random_name);
-            $last_uploaded = 'images/home/' . $random_name;
+            Image::make($image)->resize(1920, 1088)->save('images/slider/' . $random_name);
+            $last_uploaded = 'images/slider/' . $random_name;
 
 
 
@@ -54,7 +55,7 @@ class HomeController extends Controller
                 'created_at' => Carbon::now()
             ]);
 
-            return Redirect::back()->with('success', 'Slider added successfully');
+            return Redirect::route('slider.index')->with('success', 'Slider added successfully');
         }
 
     }

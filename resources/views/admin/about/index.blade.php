@@ -3,7 +3,7 @@
 @section('admin')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            All Sliders
+            All Contents
 
         </h2>
     </x-slot>
@@ -11,8 +11,8 @@
     <div class="py-12">
         <div class="container">
             <div class="row">
-                <h3>Home Slider</h3>
-                <a href="{{ route('slider.add') }}"><button class="btn btn-info m-4">Add Slider</button></a>
+                <h3>Home About</h3>
+                <a href="{{ route('about.add') }}"><button class="btn btn-info m-4">Add About Us</button></a>
                 <br>
                 <div class="col-md-12">
                     <div class="card">
@@ -27,41 +27,37 @@
 
                         @endif
 
-                        <div class="card-header"> All Sliders</div>
+                        <div class="card-header"> All About Us</div>
 
 
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th scope="col" width="5%">ID</th>
-                                    <th scope="col" width="15%">Slider Title</th>
-                                    <th scope="col" width="25%">Slider Desc</th>
-                                    <th scope="col" width="15%">Slider Image</th>        
+                                    <th scope="col" width="15%">About Us Title</th>
+                                    <th scope="col" width="25%">Short Desc</th>
+                                    <th scope="col" width="15%">Long Desc</th>
                                     <th scope="col" width="15%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                                @php($i = 1) 
-                                                                  
-                                
+                                @php($i = 1)
 
-                                @foreach ($sliders as $row)
+
+
+                                @foreach ($about as $row)
 
                                     <tr>
                                         <th scope="row">{{ $i++ }}</th>
                                         <td>{{ $row->title }}</td>
-                                        <td>{{ $row->description }}</td>
-                                        <td><img src="{{ asset($row->image) }}" alt="{{ $row->name }}"
-                                                style="height: 40px; width:70px;"></td>
-                                        
+                                        <td>{{ $row->short_desc }}</td>
+                                        <td>{{ $row->long_desc }}</td>
                                         <td>
-
-                                            <a href="{{ url('slider/edit/' . $row->id) }}" class="btn btn-info">Edit
+                                            <a href="{{ url('about-us/edit/' . $row->id) }}" class="btn btn-info">Edit
                                             </a>
 
-
-                                            <a href="{{ url('slider/' . $row->id) }}" class="btn btn-danger"
+                                            <a href="{{ url('about-us/' . $row->id) }}" class="btn btn-danger"
                                                 onclick="return confirm('Are you sure yo want to delete this brand?')">Delete
                                             </a>
 
@@ -75,7 +71,7 @@
                         </table>
                     </div>
 
-                </div>                
+                </div>
 
             </div>
         </div>

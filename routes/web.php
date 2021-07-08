@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
@@ -10,7 +11,8 @@ use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
     $brands = DB::table('brands')->get();
-    return view('home',compact('brands'));
+    $about =  DB::table('home_abouts')->get()->first();
+    return view('home',compact('brands','about'));
 });
 Route::get('/home', function () {
     echo "this is home page";
@@ -53,7 +55,19 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 /* Logout route */
 Route::get('/user/logout',[BrandController::class,'logout'])->name('user.logout');
 
-Route::get('/home/slider',[HomeController::class,'slider'])->name('home.slider');
 
+Route::get('/sl ider/home',[HomeController::class,'slider'])->name('slider.index');
 Route::get('/slider/add',[HomeController::class,'addSlider'])->name('slider.add');
 Route::post('/slider',[HomeController::class,'store'])->name('sliders.store');
+
+/* About us */
+Route::get('/about-us',[AboutController::class,'index'])->name('about.index');
+Route::get('/about-us/add',[AboutController::class,'addAbout'])->name('about.add');
+Route::post('/about-us',[AboutController::class,'store'])->name('about.store');
+Route::get('/about-us/edit/{id}',[AboutController::class,'edit']);
+Route::post('/about-us/update/{id}',[AboutController::class,'update']);
+Route::get('/about-us/{id}',[AboutController::class,'destroy'])->name('about.destroy');
+
+
+
+
