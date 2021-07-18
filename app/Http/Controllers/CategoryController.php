@@ -35,7 +35,7 @@ class CategoryController extends Controller
 
         return view('admin.category.index', compact('categories', 'trashCat'));
     }
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validate(
             [

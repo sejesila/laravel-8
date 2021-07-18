@@ -61,6 +61,17 @@
                 </a>
               </div>
             </div>
+            @if (session('success'))
+
+              <div class="alert alert-success" role="alert">
+                <strong>{{ session('success') }}</strong>
+
+                <hr>
+
+              </div>
+
+            @endif
+
             <div class="card-body p-5">
 
               <h4 class="text-dark mb-5">Sign In</h4>

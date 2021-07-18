@@ -13,16 +13,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="card">
-                        @if (session('success'))
 
-                            <div class="alert alert-success" role="alert">
-                                <strong>{{ session('success') }}</strong>
-
-                                <hr>
-
-                            </div>
-
-                        @endif
 
                         <div class="card-header"> All Brands</div>
 

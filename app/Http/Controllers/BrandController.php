@@ -41,31 +41,25 @@ class BrandController extends Controller
         if ($validate->fails()) {
             return Redirect::back()->withErrors($validate)->withInput();
         } else {
-            /*  /*   generate random image name and upload
-            $image = $request->file('brand_image');
-            $random_name = hexdec(uniqid());
-            $image_extension = strtolower($image->getClientOriginalExtension());
-            $image_name = $random_name . '.' . $image_extension;
-            $upload_location = 'images/brand/';
-            $last_uploaded = $upload_location . $image_name;
-            $image->move($upload_location, $image_name);
 
-         */
             // Use image intervention package to resize the images
             $image = $request->file('brand_image');
             $random_name = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
             Image::make($image)->resize(300, 200)->save('images/brand/' . $random_name);
             $last_uploaded = 'images/brand/' . $random_name;
 
-
-
             Brand::insert([
                 'brand_name' => $request->brand_name,
                 'brand_image' => $last_uploaded,
                 'created_at' => Carbon::now()
             ]);
+            $notification = array(
+                'message' => 'Brand added successfully',
+                'alert-type'=>'success'
 
-            return Redirect::back()->with('success', 'Brand added successfully');
+            );
+
+            return Redirect::back()->with($notification);
         }
     }
     public function editBrand($id)
@@ -122,8 +116,12 @@ class BrandController extends Controller
                     'brand_name' => $request->brand_name,
                     'updated_at' => Carbon::now()
                 ]);
+                $notification = array(
+                    'message' => 'Brand Updated successfully',
+                    'alert-type'=>'info'
+                );
 
-                return Redirect::back()->with('success', 'Brand Updated successfully');
+                return Redirect::route('brands.index')->with($notification);
                 # code...
             }
         }
@@ -151,7 +149,6 @@ class BrandController extends Controller
 
         foreach ($image as $multi_img) {
 
-
             $random_name = hexdec(uniqid()) . '.' . $multi_img->getClientOriginalExtension();
             Image::make($multi_img)->resize(300, 300)->save('images/multi/' . $random_name);
             $last_uploaded = 'images/multi/' . $random_name;
@@ -162,9 +159,12 @@ class BrandController extends Controller
                 'created_at' => Carbon::now()
             ]);
         }
+        $notification = array(
+            'message' => 'Images added successfully',
+            'alert-type'=>'success'
+        );
 
-
-        return Redirect::back()->with('success', 'Images added successfully');
+        return Redirect::back()->with($notification);
     }
     public function logout(){
         Auth::logout();

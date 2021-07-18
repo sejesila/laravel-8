@@ -7,6 +7,7 @@ use App\Models\HomeAbout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Multipic;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
@@ -76,5 +77,9 @@ class AboutController extends Controller
     {
         $delete = HomeAbout::findOrFail($id)->delete();
         return Redirect::back()->with('success', 'About deleted');
+    }
+    public function portfolio(){
+         $images = Multipic::all();
+         return view('pages.portfolio',compact('images'));
     }
 }
