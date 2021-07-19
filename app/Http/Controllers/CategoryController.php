@@ -104,7 +104,6 @@ class CategoryController extends Controller
     }
     public function softDelete($id)
     {
-
         $delete = Category::findOrFail($id)->delete();
         return Redirect()->back()->with('success', 'Soft deletion succesful');
     }
